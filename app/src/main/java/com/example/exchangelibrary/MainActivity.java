@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         AuthenticationPagerAdapter pagerAdapter = new AuthenticationPagerAdapter(getSupportFragmentManager());
         pagerAdapter.addFragmet(new LoginFragment());
         pagerAdapter.addFragmet(new RegisterFragment());
+//        pagerAdapter.addFragmet(new HomePageFragment());
         viewPager.setAdapter(pagerAdapter);
     }
 
