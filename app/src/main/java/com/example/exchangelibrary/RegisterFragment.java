@@ -19,12 +19,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.concurrent.Executor;
+
 public class RegisterFragment extends Fragment {
 
-    private FirebaseAuth mAuth;
-    private EditText email, password;
-    private Button registerBtn;
-    int duration = Toast.LENGTH_SHORT;
+    public FirebaseAuth mAuth;
+//    public int duration = Toast.LENGTH_SHORT;
+
     public RegisterFragment() {
         // Required empty public constructor
     }
@@ -33,39 +34,48 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        email = getView().findViewById(R.id.et_email);
-        password = getView().findViewById(R.id.et_password);
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.register_activity,null);
+        EditText email = (EditText) root.findViewById(R.id.et_email);
+        EditText password = (EditText) root.findViewById(R.id.et_password);
+        Button registerBtn = (Button) root.findViewById(R.id.btn_register);
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String emailid = email.toString();
-                String passd = password.toString();
+                String emailid = email.getText().toString();
+                String passd = password.getText().toString();
 
                 if (TextUtils.isEmpty(emailid) && TextUtils.isEmpty(passd)) {
-                    Log.e("error", "Please enter user name and password");
+                    Log.v("error", "Please enter user name and password");
                 }
-                createAccount(emailid,passd);
+                else{
+                    createAccount(emailid,passd);
+
+                }
             }
         });
-        return inflater.inflate(R.layout.register_activity, container, false);
+        return root;
+//        return inflater.inflate(R.layout.register_activity, container, false);
     }
+
 
     private void createAccount(String email, String password) {
         // [START create_user_with_email]
+        Log.d("Email","This is:"+email);
+        mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
                             Log.d("Success", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("Error", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(RegisterFragment.this, "Authentication failed.", duration).show();
                         }
+//                        else {
+//                            Log.d("Error","Failure");
+//                            Log.w("Error", "createUserWithEmail:failure", task.getException());
+//                            Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+//                        }
                     }
                 });
         // [END create_user_with_email]
