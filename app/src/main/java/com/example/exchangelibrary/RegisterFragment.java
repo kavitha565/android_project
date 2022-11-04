@@ -50,18 +50,14 @@ public class RegisterFragment extends Fragment {
                 }
                 else{
                     createAccount(emailid,passd);
-
                 }
             }
         });
         return root;
-//        return inflater.inflate(R.layout.register_activity, container, false);
     }
 
 
     private void createAccount(String email, String password) {
-        // [START create_user_with_email]
-        Log.d("Email","This is:"+email);
         mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
@@ -70,15 +66,13 @@ public class RegisterFragment extends Fragment {
                         if (task.isSuccessful()) {
                             Log.d("Success", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            Toast.makeText(getActivity(),"User:"+user.getEmail()+"registered  in successfully",Toast.LENGTH_SHORT).show();
                         }
-//                        else {
-//                            Log.d("Error","Failure");
-//                            Log.w("Error", "createUserWithEmail:failure", task.getException());
-//                            Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-//                        }
+                        else {
+                            Log.d("Error", "createUserWithEmail:failure", task.getException());
+                        }
                     }
                 });
-        // [END create_user_with_email]
     }
 
 }
