@@ -44,7 +44,7 @@ public class LoginFragment extends Fragment {
                 String passd = password.getText().toString();
 
                 if (TextUtils.isEmpty(emailid) && TextUtils.isEmpty(passd)) {
-                    Log.v("error", "Please enter user name and password");
+                    Toast.makeText(getActivity(),"Field can't be empty",Toast.LENGTH_SHORT).show();
                 }
                 else{
                     loginAcoount(emailid,passd);

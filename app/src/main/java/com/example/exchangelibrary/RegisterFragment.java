@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import android.os.Bundle;
 
@@ -23,6 +24,7 @@ import java.util.concurrent.Executor;
 
 public class RegisterFragment extends Fragment {
 
+    public String username;
     public FirebaseAuth mAuth;
 //    public int duration = Toast.LENGTH_SHORT;
 
@@ -35,8 +37,10 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.register_activity,null);
+        EditText name = (EditText) root.findViewById(R.id.et_name);
         EditText email = (EditText) root.findViewById(R.id.et_email);
         EditText password = (EditText) root.findViewById(R.id.et_password);
+        EditText confirmpassword = (EditText) root.findViewById(R.id.et_repassword);
         Button registerBtn = (Button) root.findViewById(R.id.btn_register);
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
@@ -44,12 +48,26 @@ public class RegisterFragment extends Fragment {
             public void onClick(View view) {
                 String emailid = email.getText().toString();
                 String passd = password.getText().toString();
+                String username = name.getText().toString();
+                String confPasswd = confirmpassword.getText().toString();
 
-                if (TextUtils.isEmpty(emailid) && TextUtils.isEmpty(passd)) {
-                    Log.v("error", "Please enter user name and password");
+                String emailRegx = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
+                if (TextUtils.isEmpty(emailid) && TextUtils.isEmpty(passd) && TextUtils.isEmpty(username) && TextUtils.isEmpty(confPasswd)) {
+                    Toast.makeText(getActivity(),"Field can't be empty",Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    createAccount(emailid,passd);
+                    if (emailid.matches(emailRegx)){
+                        if (passd.equals(confPasswd)){
+                            createAccount(emailid,passd, username);
+                        }
+                        else {
+                            Toast.makeText(getActivity(),"Password is not matching",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else{
+                        Toast.makeText(getActivity(),"Invalid email input",Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -57,7 +75,7 @@ public class RegisterFragment extends Fragment {
     }
 
 
-    private void createAccount(String email, String password) {
+    private void createAccount(String email, String password, String username) {
         mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
@@ -67,6 +85,15 @@ public class RegisterFragment extends Fragment {
                             Log.d("Success", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(getActivity(),"User:"+user.getEmail()+"registered  in successfully",Toast.LENGTH_SHORT).show();
+                            UserProfileChangeRequest updateProfile = new UserProfileChangeRequest.Builder().setDisplayName(username).build();
+                            user.updateProfile(updateProfile).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.d("Success", "User profile is updated");
+                                    }
+                                }
+                            });
                         }
                         else {
                             Log.d("Error", "createUserWithEmail:failure", task.getException());
