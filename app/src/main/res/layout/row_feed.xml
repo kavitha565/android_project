@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,9 +10,11 @@
 
         <ImageView
             android:id="@+id/profilePic"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:adjustViewBounds="true"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="1dp"
             android:src="@drawable/profile_img">
         </ImageView>
 
@@ -27,7 +27,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:text="Kavitha Pasupuleti"
+                android:text="Test User"
                 android:textColor="@color/black"
                 android:fontFamily="sans-serif-medium"
                 android:textSize="17sp"
