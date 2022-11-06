@@ -18,33 +18,12 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    DrawerLayout drawerLayout;
-    NavigationView navigationView;
-    Toolbar toolbar;
-
-
-
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        drawerLayout = findViewById(R.id.drawerlayout);
-        navigationView = findViewById(R.id.navigationview);
-        toolbar = findViewById(R.id.toolbar);
-
-
-
-
-        setSupportActionBar(toolbar);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigration_open,R.string.navigration_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
 
         ViewPager viewPager = findViewById(R.id.viewPager);
 
