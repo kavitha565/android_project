@@ -1,5 +1,6 @@
 package com.example.exchangelibrary;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -14,7 +15,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class HomeActivity extends AppCompatActivity {
-
+    FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener authStateListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,17 +24,23 @@ public class HomeActivity extends AppCompatActivity {
 
         TextView username = (TextView) findViewById(R.id.tv_title);
         Button logout = (Button) findViewById(R.id.btn_logout);
-
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        mAuth = FirebaseAuth.getInstance();
+
+//        authStateListener = new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//            }
+//        };
+
         if (user != null) {
-            // Name, email address, and profile photo Url
             String name = user.getDisplayName();
             String email = user.getEmail();
             String uid = user.getUid();
             username.setText(name);
-        }
-        else {
-            Intent intent = new Intent(this, MainActivity.class);
+        } else {
+            Intent intent = new Intent(HomeActivity.this, MainActivity.class);
             startActivity(intent);
         }
 

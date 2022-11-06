@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,6 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginFragment extends Fragment {
     public FirebaseAuth mAuth;
+    public ProgressBar probar;
 
     public LoginFragment() {
     }
@@ -36,6 +38,7 @@ public class LoginFragment extends Fragment {
         EditText email = (EditText) root.findViewById(R.id.et_email);
         EditText password = (EditText) root.findViewById(R.id.et_password);
         Button loginBtn = (Button) root.findViewById(R.id.btn_login);
+        probar = (ProgressBar) root.findViewById(R.id.progressbar);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +50,8 @@ public class LoginFragment extends Fragment {
                     Toast.makeText(getActivity(),"Field can't be empty",Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    loginAcoount(emailid,passd);
+                    probar.setVisibility(View.VISIBLE);
+                    loginAccount(emailid,passd);
                 }
             }
         });
@@ -55,7 +59,7 @@ public class LoginFragment extends Fragment {
         return root;
     }
 
-    public void loginAcoount(String email, String password){
+    public void loginAccount(String email, String password){
         mAuth = FirebaseAuth.getInstance();
         mAuth.signInWithEmailAndPassword(email, password).
                 addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
@@ -66,10 +70,13 @@ public class LoginFragment extends Fragment {
                     Log.d("", "signInWithEmail:success");
                     FirebaseUser user = mAuth.getCurrentUser();
                     Log.d("User","Username:"+user.getEmail()+"Logged in");
+                    probar.setVisibility(View.GONE);
                     Intent intent = new Intent(getActivity(), HomeActivity.class);
                     startActivity(intent);
 //                    Toast.makeText(getActivity(),"User:"+user.getEmail()+"logged in successfully",Toast.LENGTH_SHORT).show();
                 } else {
+                    probar.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(),"" +task.getException(),Toast.LENGTH_SHORT).show();
                     Log.d("Error", "signInWithEmail:failure", task.getException());
                 }
             }

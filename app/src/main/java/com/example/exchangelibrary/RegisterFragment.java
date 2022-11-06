@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.concurrent.Executor;
@@ -25,6 +26,7 @@ import java.util.concurrent.Executor;
 public class RegisterFragment extends Fragment {
 
     public String username;
+    public ProgressBar probar;
     public FirebaseAuth mAuth;
 //    public int duration = Toast.LENGTH_SHORT;
 
@@ -42,6 +44,7 @@ public class RegisterFragment extends Fragment {
         EditText password = (EditText) root.findViewById(R.id.et_password);
         EditText confirmpassword = (EditText) root.findViewById(R.id.et_repassword);
         Button registerBtn = (Button) root.findViewById(R.id.btn_register);
+        probar = (ProgressBar) root.findViewById(R.id.progressbar);
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +54,7 @@ public class RegisterFragment extends Fragment {
                 String username = name.getText().toString();
                 String confPasswd = confirmpassword.getText().toString();
 
+
                 String emailRegx = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
                 if (TextUtils.isEmpty(emailid) && TextUtils.isEmpty(passd) && TextUtils.isEmpty(username) && TextUtils.isEmpty(confPasswd)) {
@@ -58,11 +62,17 @@ public class RegisterFragment extends Fragment {
                 }
                 else{
                     if (emailid.matches(emailRegx)){
-                        if (passd.equals(confPasswd)){
-                            createAccount(emailid,passd, username);
+                        if (passd.length()>=6){
+                            if (passd.equals(confPasswd)){
+                                probar.setVisibility(View.VISIBLE);
+                                createAccount(emailid,passd, username);
+                            }
+                            else {
+                                Toast.makeText(getActivity(),"Password is not matching",Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else {
-                            Toast.makeText(getActivity(),"Password is not matching",Toast.LENGTH_SHORT).show();
+                        else{
+                            Toast.makeText(getActivity(), " Password must be at least 6 characters", Toast.LENGTH_SHORT).show();
                         }
                     }
                     else{
@@ -90,6 +100,7 @@ public class RegisterFragment extends Fragment {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
+                                        probar.setVisibility(View.GONE);
                                         Log.d("Success", "User profile is updated");
                                     }
                                 }
