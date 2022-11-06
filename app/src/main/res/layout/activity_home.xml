@@ -9,10 +9,7 @@
     tools:context=".HomeActivity"
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".HomeActivity">
+
         <com.google.android.material.navigation.NavigationView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -24,26 +21,27 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#FF7518"
-                app:title="Toolbars"
-                app:titleTextColor="#FFFFFF"
-                app:titleMarginStart="10dp"
-                android:layout_marginBottom="5dp"
-                tools:ignore="Missing"/>
+                android:layout_height="match_parent">
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FF7518"
+                    app:title="Home"
+                    app:titleTextColor="#FFFFFF"
+                    app:titleMarginStart="10dp"
+                    android:layout_marginBottom="5dp"
+                    tools:ignore="MissingConstraints"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </ScrollView>
 
 
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
 
-    </RelativeLayout>
+
+
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -24,7 +24,7 @@ public class HomeActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
-    ActionBarDrawerToggle toggle;
+   // ActionBarDrawerToggle toggle;
     private FirebaseAuth.AuthStateListener authStateListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +41,10 @@ public class HomeActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigration_open,R.string.navigration_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigration_open,R.string.navigration_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        drawerLayout.closeDrawers();
+
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -75,12 +75,12 @@ public class HomeActivity extends AppCompatActivity {
 //            }
 //        });
     }
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        if (toggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//
+//        if (toggle.onOptionsItemSelected(item)) {
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 }
