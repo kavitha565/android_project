@@ -5,11 +5,13 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -45,6 +47,23 @@ ImageView imageView;
             @Override
             public void onClick(View view) {
                 getContent.launch("image/*");
+            }
+        });
+
+        Button postBtn = (Button) findViewById(R.id.post);
+        postBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent intent = new Intent(AddPost.this, ProfileActivity.class);
+                startActivity(intent);
+                Toast.makeText(getApplication(),"Post added successfully",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        Button cancelBtn = (Button) findViewById(R.id.cancel);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent intent = new Intent(AddPost.this, ProfileActivity.class);
+                startActivity(intent);
             }
         });
 

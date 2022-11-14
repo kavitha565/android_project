@@ -44,7 +44,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
         android:padding="15dp"
-        android:inputType="textPersonName"
+        android:inputType="text"
         android:fontFamily="@font/roboto_regular"
         android:background="@drawable/layout_et"
         android:textSize="15sp" />
@@ -59,7 +59,21 @@
         android:layout_marginBottom="10dp"
         android:padding="15dp"
         android:fontFamily="@font/roboto_regular"
-        android:inputType="textEmailAddress"
+        android:inputType="text"
+        android:background="@drawable/layout_et"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/genre"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Genre"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:padding="15dp"
+        android:fontFamily="@font/roboto_regular"
+        android:inputType="text"
         android:background="@drawable/layout_et"
         android:textSize="15sp" />
 
@@ -73,7 +87,7 @@
         android:layout_marginBottom="10dp"
         android:padding="15dp"
         android:fontFamily="@font/roboto_regular"
-        android:inputType="textPassword"
+        android:inputType="text"
         android:background="@drawable/layout_et"
         android:textSize="15sp" />
 
@@ -87,22 +101,21 @@
         android:layout_marginBottom="10dp"
         android:padding="15dp"
         android:fontFamily="@font/roboto_regular"
-        android:inputType="textPassword"
+        android:inputType="text"
         android:background="@drawable/layout_et"
         android:textSize="15sp" />
 
     <EditText
         android:id="@+id/et_password"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
         android:background="@drawable/layout_et"
         android:fontFamily="@font/roboto_regular"
         android:hint="@string/summary"
-        android:inputType="textPassword"
+        android:inputType="text"
         android:padding="15dp"
         android:textSize="15sp" />
 
@@ -155,7 +168,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="30dp"
-        android:layout_marginLeft="70dp"
+        android:layout_marginLeft="80dp"
         android:orientation="horizontal">
         <Button
             android:id="@+id/post"
