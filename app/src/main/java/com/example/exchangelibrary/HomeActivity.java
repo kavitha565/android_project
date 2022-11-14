@@ -46,7 +46,8 @@ public class HomeActivity extends AppCompatActivity {
     ArrayList<String>  tempArr = name;
     boolean isSearching = false;
     ArrayAdapter<String> arrayAdapter;
-    View scroll;
+    View profileinfo,otherinfo,searchinfo;
+    SearchView searchView;
     // ActionBarDrawerToggle toggle;
     private FirebaseAuth.AuthStateListener authStateListener;
     @Override
@@ -59,7 +60,9 @@ public class HomeActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawerlayout);
         navigationView = findViewById(R.id.navigationview);
         toolbar = findViewById(R.id.toolbar);
-        scroll = findViewById(R.id.scrollview);
+        profileinfo = findViewById(R.id.profile_container);
+        otherinfo = findViewById(R.id.otherinfo);
+        searchinfo = findViewById(R.id.listview);
 
         setSupportActionBar(toolbar);
 
@@ -90,7 +93,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
         );
         tempArr.clear();
-        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView = (SearchView) menuItem.getActionView();
         searchView.setQueryHint("Type here to search");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -100,18 +103,17 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                scroll.setVisibility(View.GONE);
+                profileinfo.setVisibility(View.GONE);
+                otherinfo.setVisibility(View.GONE);
+
                 Log.e("Testing",""+newText);
-//                arrayAdapter.getFilter().filter(newText);
                 tempArr.clear();
                 arrayAdapter.notifyDataSetChanged();
                 Log.e("Testng", " Init name size is " + initName.size());
-//                arrayAdapter.add("");
                 for (int i = 0; i< initName.size(); i++) {
                     Log.e("Testng", " Item is " + initName.get(i).toString());
                     if(initName.get(i).toLowerCase().contains(newText.toString().toLowerCase())){
                         arrayAdapter.add(initName.get(i));
-                        //                        tempArr.add(initName.get(i));
                     }
                 }
                 Log.e("Testng", " tempArr is " + tempArr.toString());
@@ -120,4 +122,17 @@ public class HomeActivity extends AppCompatActivity {
         });
         return super.onCreateOptionsMenu(menu);
     }
+
+    @Override
+    public void onBackPressed() {
+        if (!searchView.isIconified()) {
+            profileinfo.setVisibility(View.VISIBLE);
+            otherinfo.setVisibility(View.VISIBLE);
+//            searchinfo.setVisibility(View.GONE);
+            searchView.setIconified(true);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
 }

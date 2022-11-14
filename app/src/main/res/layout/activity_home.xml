@@ -18,6 +18,7 @@
             app:menu="@menu/sidemenu"
             android:layout_gravity="start" />
 <RelativeLayout
+    android:id="@+id/searchinfo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -40,7 +41,8 @@
             android:layout_height="match_parent">
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:id="@+id/toollayout">
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
@@ -87,9 +89,13 @@
                     </LinearLayout>
 
                 </RelativeLayout>
-                <TextView
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/otherinfo"
+                    android:layout_below="@id/profile_container">
+                    <TextView
                     android:id="@id/title"
-                    android:layout_below="@+id/profile_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -97,81 +103,77 @@
                     android:textSize="16sp"
                     android:textColor="@color/black"
                     ></TextView>
-                <TextView
-                    android:id="@+id/author"
-                    android:layout_below="@+id/title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="Author: Philip Roth"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    ></TextView>
-                <TextView
-                    android:id="@+id/summary"
-                    android:layout_below="@+id/author"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="Summary: Letting Go by Philip Roth is a book my father handed me. Only one novel a year, on average, was read by Dad. He read hundreds of scholarly non-fiction books each year because he studied politics."
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    ></TextView>
-                <TextView
-                    android:id="@+id/genre"
-                    android:layout_below="@+id/summary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="Genre: Fictional"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    ></TextView>
-
-                <TextView
-                    android:id="@+id/review"
-                    android:layout_below="@+id/genre"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="Review: Good"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    ></TextView>
-                <TextView
-                    android:id="@+id/rating"
-                    android:layout_below="@+id/review"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="Rating: 4/5"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    ></TextView>
-
-                <TextView
-                    android:id="@+id/location"
-                    android:layout_below="@+id/rating"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="Location: Texas"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    ></TextView>
-
-                <ImageView
-                    android:id="@+id/book_img"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/location"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/book"
-                    android:layout_marginTop="5dp">
-                </ImageView>
-
-                <RelativeLayout
+                    <TextView
+                        android:id="@+id/author"
+                        android:layout_below="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="Author: Philip Roth"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        ></TextView>
+                    <TextView
+                        android:id="@+id/summary"
+                        android:layout_below="@+id/author"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="Summary: Letting Go by Philip Roth is a book my father handed me. Only one novel a year, on average, was read by Dad. He read hundreds of scholarly non-fiction books each year because he studied politics."
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        ></TextView>
+                    <TextView
+                        android:id="@+id/genre"
+                        android:layout_below="@+id/summary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="Genre: Fictional"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        ></TextView>
+                    <TextView
+                        android:id="@+id/review"
+                        android:layout_below="@+id/genre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="Review: Good"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        ></TextView>
+                    <TextView
+                        android:id="@+id/rating"
+                        android:layout_below="@+id/review"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="Rating: 4/5"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        ></TextView>
+                    <TextView
+                        android:id="@+id/location"
+                        android:layout_below="@+id/rating"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="Location: Texas"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        ></TextView>
+                    <ImageView
+                        android:id="@+id/book_img"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/location"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/book"
+                        android:layout_marginTop="5dp">
+                    </ImageView>
+                    <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/book_img">
@@ -191,6 +193,7 @@
                             android:textColor="@android:color/white"
                             android:text="Chat"/>
                     </LinearLayout>
+                </RelativeLayout>
                 </RelativeLayout>
             </RelativeLayout>
         </ScrollView>
