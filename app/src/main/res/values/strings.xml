@@ -8,20 +8,25 @@
     <string name="logout">Logout</string>
     <string name="password">Password</string>
     <string name="e_mail">Email</string>
+    <string name="author">Author</string>
+    <string name="summary">Summary</string>
     <string name="regtag">Here\'s \nyour first step with us!</string>
     <string name="logtag">Already have an Account?</string>
     <string name="swipe_right_for_login">Swipe Right for Login</string>
     <string name="register">Register</string>
+    <string name="post">Post</string>
+    <string name="Addpost">Add Post</string>
     <string name="re_type_password">Re-type Password</string>
     <string name="your_name">Full Name</string>
-
+    <string name="Booktitle">Book Title</string>
     <string name="title_activity_home">HomeActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
+    <string name="review_rating">Reviews and Rating</string>
+    <string name="status">Status</string>
 
     <string name="navigration_open">Open Navigation drawer</string>
     <string name="navigration_close">close Navigation drawer</string>

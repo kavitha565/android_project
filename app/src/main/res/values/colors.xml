@@ -10,4 +10,5 @@
     <color name="colorPrimary">#FF7518</color>
     <color name="colorPrimaryDark">#FF7518</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="popup">#7EF2F3F5</color>
 </resources>
