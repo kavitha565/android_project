@@ -16,9 +16,26 @@
             android:id="@+id/navigationview"
             app:headerLayout="@layout/headerfile"
             app:menu="@menu/sidemenu"
-            android:layout_gravity="start"/>
+            android:layout_gravity="start" />
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/listview"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="150px" />
+</RelativeLayout>
+
+    <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <ScrollView
+            android:id="@+id/scrollview"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <RelativeLayout
@@ -67,11 +84,7 @@
                             android:layout_height="wrap_content">
 
                         </TextView>
-
-
-
                     </LinearLayout>
-
 
                 </RelativeLayout>
                 <TextView
@@ -177,19 +190,9 @@
                             android:fontFamily="sans-serif-medium"
                             android:textColor="@android:color/white"
                             android:text="Chat"/>
-
-
                     </LinearLayout>
                 </RelativeLayout>
-
             </RelativeLayout>
-
-
         </ScrollView>
-
-
-
-
-
 
 </androidx.drawerlayout.widget.DrawerLayout>
