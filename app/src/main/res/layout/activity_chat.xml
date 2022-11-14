@@ -55,7 +55,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Input"
+            android:hint="Type message"
             android:id="@+id/input"
             />
     </com.google.android.material.textfield.TextInputLayout>
