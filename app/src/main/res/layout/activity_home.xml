@@ -17,175 +17,53 @@
             app:headerLayout="@layout/headerfile"
             app:menu="@menu/sidemenu"
             android:layout_gravity="start"/>
-
-        <ScrollView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <RelativeLayout
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#FF7518"
-                    app:title="Home"
-                    app:titleTextColor="#FFFFFF"
-                    app:titleMarginStart="10dp"
-                    android:layout_marginBottom="5dp"
-                    tools:ignore="MissingConstraints"/>
+                android:layout_height="wrap_content"
+                android:background="#FF7518"
+                app:title="Home"
+                app:titleTextColor="#FFFFFF"
+                app:titleMarginStart="10dp"
+                android:layout_marginBottom="5dp"
+                tools:ignore="MissingConstraints"/>
+
                 <RelativeLayout
-                    android:id="@+id/profile_container"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="60dp">
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/toolbar">
 
-                    <ImageView
-                        android:id="@+id/profilePic"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:adjustViewBounds="true"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginLeft="1dp"
-                        android:src="@drawable/profile_img">
-                    </ImageView>
-
-                    <LinearLayout
-                        android:orientation="vertical"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/post_feeds_list"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentStart="true"
+                        android:dividerHeight="16dp"
+                        android:divider="@android:color/transparent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"/>
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_toRightOf="@id/profilePic">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:text="Test User"
-                            android:textColor="@color/black"
-                            android:fontFamily="sans-serif-medium"
-                            android:textSize="17sp"
-                            android:layout_marginTop="10dp"
-                            android:layout_height="wrap_content">
-
-                        </TextView>
-
-
-
-                    </LinearLayout>
-
-
-                </RelativeLayout>
-                <TextView
-                    android:id="@id/title"
-                    android:layout_below="@+id/profile_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="Title: Letting Go"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    ></TextView>
-                <TextView
-                    android:id="@+id/author"
-                    android:layout_below="@+id/title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="Author: Philip Roth"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    ></TextView>
-                <TextView
-                    android:id="@+id/summary"
-                    android:layout_below="@+id/author"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="Summary: Letting Go by Philip Roth is a book my father handed me. Only one novel a year, on average, was read by Dad. He read hundreds of scholarly non-fiction books each year because he studied politics."
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    ></TextView>
-                <TextView
-                    android:id="@+id/genre"
-                    android:layout_below="@+id/summary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="Genre: Fictional"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    ></TextView>
-
-                <TextView
-                    android:id="@+id/review"
-                    android:layout_below="@+id/genre"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="Review: Good"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    ></TextView>
-                <TextView
-                    android:id="@+id/rating"
-                    android:layout_below="@+id/review"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="Rating: 4/5"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    ></TextView>
-
-                <TextView
-                    android:id="@+id/location"
-                    android:layout_below="@+id/rating"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="Location: Texas"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    ></TextView>
-
-                <ImageView
-                    android:id="@+id/book_img"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/location"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/book"
-                    android:layout_marginTop="5dp">
-                </ImageView>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/book_img">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_marginTop="10dp">
-
-                        <Button
-                            android:id="@+id/btn_chat"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/layout_btn"
-                            android:fontFamily="sans-serif-medium"
-                            android:textColor="@android:color/white"
-                            android:text="Chat"/>
-
-
-                    </LinearLayout>
+                        android:clickable="true"
+                        android:src="@drawable/ic_chat"
+                        android:id="@+id/chatBtn"
+                        android:tint="@android:color/white"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        app:fabSize="mini" />
                 </RelativeLayout>
 
-            </RelativeLayout>
 
 
-        </ScrollView>
+        </RelativeLayout>
+
 
 
 
