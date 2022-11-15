@@ -6,18 +6,27 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 
 public class ChatActivity extends AppCompatActivity {
@@ -26,49 +35,43 @@ public class ChatActivity extends AppCompatActivity {
     ChatAdapter chatAdapter;
     ArrayList<ChatMessage> messagesList;
     String name;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("message");
 
-    //ChatMessage messagesList = new ChatMessage("Hi this is kavitha","Kavitha Pasupuleti");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        Log.d("info","In chat acitiviy");
+        Log.d("info", "In chat acitiviy");
 
-        ArrayList<ChatMessage> messagesList = createMessagesList();
-
-        FloatingActionButton sendBtn = (FloatingActionButton)findViewById(R.id.send);
+        FloatingActionButton sendBtn = (FloatingActionButton) findViewById(R.id.send);
         recyclerView = findViewById(R.id.list_of_messages);
-        //recyclerView.hasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        messagesList = new ArrayList<ChatMessage>();
 
-        chatAdapter = new ChatAdapter(this,messagesList);
-        recyclerView.setAdapter(chatAdapter);
+        displayChatMessages();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             name = user.getDisplayName();
-        };
+        }
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText input = (EditText)findViewById(R.id.input);
+                EditText input = (EditText) findViewById(R.id.input);
+                Log.e("test", "" + input.getText().toString());
+                String timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm aa").format(Calendar.getInstance().getTime());
 
-                // Write a message to the database
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("message");
+                messagesList.add(new ChatMessage(input.getText().toString(), name, timeStamp));
+                myRef.setValue(messagesList);
 
-                Log.e("test",""+input.getText().toString());
-                myRef.setValue(new ChatMessage(input.getText().toString(), "kavitha pasupuleti","14-11-2022 08:57PM"));
-                messagesList.add(new ChatMessage(input.getText().toString(), "kavitha pasupuleti","14-11-2022 08:57PM"));
-
-                chatAdapter = new ChatAdapter(ChatActivity.this,messagesList);
+                chatAdapter = new ChatAdapter(ChatActivity.this, messagesList);
                 recyclerView.setAdapter(chatAdapter);
 
                 input.setText("");
             }
         });
-        displayChatMessages();
 
         ImageView goBack = (ImageView) findViewById(R.id.goBackTo);
         goBack.setOnClickListener(new View.OnClickListener() {
@@ -81,14 +84,30 @@ public class ChatActivity extends AppCompatActivity {
 
     private void displayChatMessages() {
 
+        myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (task.getResult().exists()) {
+                        Toast.makeText(ChatActivity.this, "Successfully Read", Toast.LENGTH_SHORT).show();
+                        DataSnapshot dataSnapshot = task.getResult();
+                        Log.e("data", ""+dataSnapshot.getValue());
+                        for (DataSnapshot ALL_USERS: dataSnapshot.getChildren()) {
+                            String messageText = ALL_USERS.child("messageText").getValue().toString();
+                            String messageTime = ALL_USERS.child("messageTime").getValue().toString();
+                            Log.e("date",""+messageTime);
+                            String messageUser = ALL_USERS.child("messageUser").getValue().toString();
+                            ChatMessage mUser = new ChatMessage(messageText, messageUser, messageTime);
+                            messagesList.add(mUser);
+                            chatAdapter = new ChatAdapter(ChatActivity.this, messagesList);
+                            recyclerView.setAdapter(chatAdapter);
+                        }
+                    }
+                }
+                else{
+                    Toast.makeText(ChatActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
-
-    private ArrayList<ChatMessage> createMessagesList(){
-        messagesList = new ArrayList<ChatMessage>();
-        messagesList.add(new ChatMessage("Hi I would like to explore some fictional books. Any suggestions?","Kavitha Pasupuleti","14-11-2022 07:04 PM"));
-        messagesList.add(new ChatMessage("I can help you with that","Sibangee Mohanty","14-11-2022  07:34 PM"));
-        messagesList.add(new ChatMessage("@Kavitha, Hi I want to Ikigai book and I am ready for an exchange","Harsh Munawala","14-11-2022 08:11 PM"));
-        return messagesList;
-    }
-
 }
