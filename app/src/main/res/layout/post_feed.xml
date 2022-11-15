@@ -125,8 +125,19 @@
             ></TextView>
 
         <TextView
-            android:id="@+id/location"
+            android:id="@+id/status"
             android:layout_below="@+id/rating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Status: In hand"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            ></TextView>
+
+        <TextView
+            android:id="@+id/location"
+            android:layout_below="@+id/status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

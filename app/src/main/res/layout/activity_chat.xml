@@ -41,9 +41,10 @@
         android:src="@drawable/ic_baseline_send_24"
         android:id="@+id/send"
         android:tint="@android:color/white"
+        app:backgroundTint="@color/colorPrimary"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        app:fabSize="mini" />
+        app:fabSize="normal" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"

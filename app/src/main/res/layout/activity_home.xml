@@ -66,11 +66,12 @@
             android:src="@drawable/ic_chat"
             android:id="@+id/chatBtn"
             android:tint="@android:color/white"
+            app:backgroundTint="@color/colorPrimary"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
-            app:fabSize="mini" />
+            app:fabSize="normal" />
     </RelativeLayout>
     </RelativeLayout>
 

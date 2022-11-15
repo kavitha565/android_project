@@ -1,9 +1,9 @@
 package com.example.exchangelibrary;
 
 public class PostFeed {
-    String username, title, author, summary, genre, review, rating, location;
+    String username, title, author, summary, genre, review, rating, status, location;
 
-    public PostFeed(String username, String title, String author, String summary, String genre, String review, String rating, String location) {
+    public PostFeed(String username, String title, String author, String summary, String genre, String review, String rating, String status, String location) {
         this.username = username;
         this.title = title;
         this.author = author;
@@ -11,6 +11,7 @@ public class PostFeed {
         this.genre = genre;
         this.review = review;
         this.rating = rating;
+        this.status = status;
         this.location = location;
     }
 
@@ -72,6 +73,10 @@ public class PostFeed {
     public void setRating(String rating) {
         this.rating = rating;
     }
+
+    public String getStatus(){ return status;}
+
+    public void setStatus(String status) {this.status = status;}
 
     public String getLocation() {
         return location;

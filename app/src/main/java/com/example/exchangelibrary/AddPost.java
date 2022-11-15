@@ -3,10 +3,12 @@ package com.example.exchangelibrary;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -20,6 +22,7 @@ public class AddPost extends AppCompatActivity {
 Spinner spinner;
 String[] statuss = {"In hand","In-progress", "Completed", "Open to exchange", "Swapped"};
 ImageView imageView;
+EditText title,author,genre,review,summary,location;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +32,12 @@ ImageView imageView;
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 
         imageView = findViewById(R.id.bookCover);
+        title =  findViewById(R.id.title);
+        author = findViewById(R.id.author);
+        genre = findViewById(R.id.genre);
+        review = findViewById(R.id.review);
+        summary = findViewById(R.id.summary);
+        location = findViewById(R.id.location);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -53,9 +62,14 @@ ImageView imageView;
         Button postBtn = (Button) findViewById(R.id.post);
         postBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent(AddPost.this, ProfileActivity.class);
-                startActivity(intent);
-                Toast.makeText(getApplication(),"Post added successfully",Toast.LENGTH_LONG).show();
+                if( TextUtils.isEmpty(title.getText()) && TextUtils.isEmpty(author.getText()) && TextUtils.isEmpty(genre.getText()) && TextUtils.isEmpty(review.getText()) && TextUtils.isEmpty(summary.getText()) && TextUtils.isEmpty(location.getText())) {
+                    Toast.makeText(getApplication(),"Field should not be empty", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Intent intent = new Intent(AddPost.this, ProfileActivity.class);
+                    startActivity(intent);
+                    Toast.makeText(getApplication(),"Post added successfully",Toast.LENGTH_LONG).show();
+                }
             }
         });
 

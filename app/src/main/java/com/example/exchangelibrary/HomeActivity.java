@@ -177,6 +177,7 @@ public class HomeActivity extends AppCompatActivity {
                 "Genre: Fictional",
                 "Review: Good",
                 "Rating: 4/5",
+                "Status In hand",
                 "Location: Texas"));
         postFeedsList.add(new PostFeed(
                 "Test User",
@@ -186,6 +187,7 @@ public class HomeActivity extends AppCompatActivity {
                 "Genre: Fictional",
                 "Review: Good",
                 "Rating: 4/5",
+                "Status : In hand",
                 "Location: Texas"));
         postFeedsList.add(new PostFeed(
                 "Test User",
@@ -195,6 +197,7 @@ public class HomeActivity extends AppCompatActivity {
                 "Genre: Fictional",
                 "Review: Good",
                 "Rating: 4/5",
+                "Status: In hand",
                 "Location: Texas"));
         return postFeedsList;
     }
