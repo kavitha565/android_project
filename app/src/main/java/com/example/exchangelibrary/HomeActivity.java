@@ -44,8 +44,8 @@ public class HomeActivity extends AppCompatActivity {
     NavigationView navigationView;
     Toolbar toolbar;
     ListView listView;
-    ArrayList<String>  initName = new ArrayList<>(Arrays.asList("Kavitha Pasupuleti", "Sibangee Mohanty", "Harsh Muniwala", "Rishab"));
-    ArrayList<String>  name = new ArrayList<>(Arrays.asList("Kavitha Pasupuleti", "Sibangee Mohanty", "Harsh Muniwala", "Rishab"));
+    ArrayList<String>  initName = new ArrayList<>(Arrays.asList("Ikigai", "The Intelligent Investor", "Atomic Habits"));
+    ArrayList<String>  name = new ArrayList<>(Arrays.asList("Ikigai", "The Intelligent Investor", "Atomic Habits"));
     ArrayList<String>  tempArr = name;
     boolean isSearching = false;
     ArrayAdapter<String> arrayAdapter;
