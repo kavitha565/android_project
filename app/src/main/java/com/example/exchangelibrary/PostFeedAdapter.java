@@ -4,7 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,6 +53,8 @@ public class PostFeedAdapter extends RecyclerView.Adapter<PostFeedAdapter.MyView
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView username, title, author, summary, genre, review, rating, location;
+        RatingBar rate;
+        Button btn;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -61,6 +66,17 @@ public class PostFeedAdapter extends RecyclerView.Adapter<PostFeedAdapter.MyView
             review = itemView.findViewById(R.id.review);
             rating = itemView.findViewById(R.id.rating);
             location = itemView.findViewById(R.id.location);
+            rate = itemView.findViewById(R.id.ratingBar);
+            btn = itemView.findViewById(R.id.btnGet);
+
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int noofstars = rate.getNumStars();
+                    float getrating = rate.getRating();
+                    Toast.makeText(itemView.getContext(), "Rating: "+getrating+"/"+noofstars, Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 }
