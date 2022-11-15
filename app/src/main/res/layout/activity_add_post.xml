@@ -12,34 +12,34 @@
         android:layout_height="50dp"
         android:background="@color/colorPrimary"
         android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/goBackTo"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:adjustViewBounds="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_baseline_arrow_back_24">
+        </ImageView>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="New Post"
             android:textSize="20sp"
             android:textColor="@color/white"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="9dp"
             />
     </LinearLayout>
-    <TextView
-        android:id="@+id/tv_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Post"
-        android:textAlignment="center"
-        android:textSize="40sp"
-        android:layout_marginStart="25dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"/>
-
-
 
     <EditText
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="Book Title"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
@@ -129,17 +129,17 @@
             android:layout_height="wrap_content"
             android:text="Cover Page"
             android:textAlignment="center"
-            android:textSize="20dp"
+            android:textSize="15sp"
             android:layout_margin="20dp"
             />
-
         <ImageView
             android:id="@+id/bookCover"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:gravity="right"
-            android:src="@drawable/cover_image_placeholder"></ImageView>
+            android:src="@drawable/cover_image_placeholder">
+        </ImageView>
     </LinearLayout>
 
     <LinearLayout
@@ -152,7 +152,7 @@
             android:layout_height="wrap_content"
             android:text="Status"
             android:textAlignment="center"
-            android:textSize="20dp"
+            android:textSize="15sp"
             android:layout_margin="20dp"
             />
 
@@ -168,33 +168,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="30dp"
-        android:layout_marginLeft="80dp"
-        android:orientation="horizontal">
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal"
+        android:gravity="center">
         <Button
             android:id="@+id/post"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_marginBottom="30dp"
             android:background="@drawable/layout_btn"
             android:fontFamily="@font/roboto_regular"
             android:onClick="onClick"
-            android:text="Post"
-            android:textColor="@android:color/white" />
-        <Button
-            android:id="@+id/cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="30dp"
-            android:background="@drawable/layout_btn"
-            android:fontFamily="@font/roboto_regular"
-            android:onClick="onClick"
-            android:text="Cancel"
+            android:text="Submit"
             android:textColor="@android:color/white" />
     </LinearLayout>
 

@@ -34,7 +34,7 @@ ImageView imageView;
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String value=adapterView.getItemAtPosition(i).toString();
-                Toast.makeText(AddPost.this,value, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(AddPost.this,value, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -59,8 +59,8 @@ ImageView imageView;
             }
         });
 
-        Button cancelBtn = (Button) findViewById(R.id.cancel);
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
+        ImageView goBack = (ImageView) findViewById(R.id.goBackTo);
+        goBack.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent intent = new Intent(AddPost.this, ProfileActivity.class);
                 startActivity(intent);

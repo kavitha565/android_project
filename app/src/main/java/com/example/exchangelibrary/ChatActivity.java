@@ -12,9 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 
 public class ChatActivity extends AppCompatActivity {
@@ -22,6 +25,7 @@ public class ChatActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ChatAdapter chatAdapter;
     ArrayList<ChatMessage> messagesList;
+    String name;
 
     //ChatMessage messagesList = new ChatMessage("Hi this is kavitha","Kavitha Pasupuleti");
     @Override
@@ -40,6 +44,10 @@ public class ChatActivity extends AppCompatActivity {
         chatAdapter = new ChatAdapter(this,messagesList);
         recyclerView.setAdapter(chatAdapter);
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            name = user.getDisplayName();
+        };
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,13 +57,11 @@ public class ChatActivity extends AppCompatActivity {
                 // Write a message to the database
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference("message");
-                Log.e("test",""+input.getText().toString());
-                myRef.setValue(new ChatMessage(input.getText().toString(), "kavitha pasupuleti"));
-                messagesList.add(new ChatMessage(input.getText().toString(), "kavitha pasupuleti"));
+                myRef.setValue(new ChatMessage(input.getText().toString(), name));
+                messagesList.add(new ChatMessage(input.getText().toString(), name));
                 chatAdapter = new ChatAdapter(ChatActivity.this,messagesList);
                 recyclerView.setAdapter(chatAdapter);
 
-                // Clear the input
                 input.setText("");
             }
         });
@@ -68,7 +74,6 @@ public class ChatActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     private void displayChatMessages() {
