@@ -44,8 +44,8 @@ public class HomeActivity extends AppCompatActivity {
     NavigationView navigationView;
     Toolbar toolbar;
     ListView listView;
-    ArrayList<String>  initName = new ArrayList<>(Arrays.asList("Sibangee", "Rishab", "Kavitha","Harsh","aaaa"));
-    ArrayList<String>  name = new ArrayList<>(Arrays.asList("Sibangee", "Rishab", "Kavitha","Harsh","aaaa"));
+    ArrayList<String>  initName = new ArrayList<>(Arrays.asList("Kavitha Pasupuleti", "Sibangee Mohanty", "Harsh Muniwala", "Rishab"));
+    ArrayList<String>  name = new ArrayList<>(Arrays.asList("Kavitha Pasupuleti", "Sibangee Mohanty", "Harsh Muniwala", "Rishab"));
     ArrayList<String>  tempArr = name;
     boolean isSearching = false;
     ArrayAdapter<String> arrayAdapter;
@@ -170,34 +170,34 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<PostFeed> createPostFeeds(){
         postFeedsList = new ArrayList<PostFeed>();
         postFeedsList.add(new PostFeed(
-                "Test User",
-                "Title: Letting Go",
-                "Author: Philip Roth",
-                "Summary: Letting Go by Philip Roth is a book my father handed me. Only one novel a year, on average, was read by Dad. He read hundreds of scholarly non-fiction books each year because he studied politics.",
-                "Genre: Fictional",
-                "Review: Good",
+                "Kavitha Pasupuleti",
+                "Title: Ikigai",
+                "Author: Hector Gracia",
+                "Summary: In researching this book, the authors interviewed the residents of the Japanese village.",
+                "Genre: Philosophy",
+                "Review: Good for self learning",
                 "Rating: 4/5",
                 "Status In hand",
                 "Location: Texas"));
         postFeedsList.add(new PostFeed(
-                "Test User",
-                "Title: Letting Go",
-                "Author: Philip Roth",
-                "Summary: Letting Go by Philip Roth is a book my father handed me. Only one novel a year, on average, was read by Dad. He read hundreds of scholarly non-fiction books each year because he studied politics.",
-                "Genre: Fictional",
-                "Review: Good",
-                "Rating: 4/5",
-                "Status : In hand",
+                "Sibangee Mohanty",
+                "Title: The Intelligent Investor",
+                "Author: Benjamin Graham",
+                "Summary: Over the years, market developments have proven the wisdom of Graham's strategies. While preserving the integrity of Graham's original text, this revised edition includes updated commentary by noted financial journalist Jason Zweig, whose perspective incorporates the realities of today's market, draws parallels between Graham's examples and today's financial headlines. ",
+                "Genre: Economics",
+                "Review: Best for personal finance",
+                "Rating: 5/5",
+                "Status In hand",
                 "Location: Texas"));
         postFeedsList.add(new PostFeed(
-                "Test User",
-                "Title: Letting Go",
-                "Author: Philip Roth",
-                "Summary: Letting Go by Philip Roth is a book my father handed me. Only one novel a year, on average, was read by Dad. He read hundreds of scholarly non-fiction books each year because he studied politics.",
-                "Genre: Fictional",
-                "Review: Good",
-                "Rating: 4/5",
-                "Status: In hand",
+                "Harsh Muniwala",
+                "Title: Atomic Habits",
+                "Author: James Clear",
+                "Summary: If you're having trouble changing your habits, the problem isn't you. The problem is your system. Bad habits repeat themselves again and again not because you don't want to change, but because you have the wrong system for change. You do not rise to the level of your goals. You fall to the level of your systems.",
+                "Genre: Self-help",
+                "Review: Average",
+                "Rating: 3.5/5",
+                "Status In hand",
                 "Location: Texas"));
         return postFeedsList;
     }

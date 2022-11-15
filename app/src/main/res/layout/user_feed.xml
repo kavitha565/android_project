@@ -40,9 +40,20 @@
             android:textColor="@color/black"
             ></TextView>
 
+        <ImageView
+            android:id="@+id/book_img"
+            android:layout_below="@+id/author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/book"
+            android:layout_marginTop="5dp">
+        </ImageView>
+
         <TextView
             android:id="@+id/summary"
-            android:layout_below="@+id/author"
+            android:layout_below="@+id/book_img"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -61,16 +72,17 @@
             android:textSize="16sp"
             android:textColor="@color/black"
             ></TextView>
+
         <TextView
             android:id="@+id/review"
-            android:layout_below="@+id/genre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/genre"
             android:layout_marginTop="10dp"
             android:text="Review: Good"
-            android:textSize="16sp"
             android:textColor="@color/black"
-            ></TextView>
+            android:textSize="16sp"></TextView>
+
         <TextView
             android:id="@+id/rating"
             android:layout_below="@+id/review"
@@ -83,8 +95,19 @@
             ></TextView>
 
         <TextView
-            android:id="@+id/location"
+            android:id="@+id/status"
             android:layout_below="@+id/rating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Status: In hand"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            ></TextView>
+
+        <TextView
+            android:id="@+id/location"
+            android:layout_below="@+id/status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -93,38 +116,6 @@
             android:textColor="@color/black"
             ></TextView>
 
-        <ImageView
-            android:id="@+id/book_img"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/location"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:src="@drawable/book"
-            android:layout_marginTop="5dp">
-        </ImageView>
-        <!--        <RelativeLayout-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_below="@id/book_img">-->
-
-        <!--            <LinearLayout-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_centerInParent="true"-->
-        <!--                android:layout_marginTop="10dp">-->
-
-        <!--                <Button-->
-        <!--                    android:id="@+id/btn_chat"-->
-        <!--                    android:layout_width="match_parent"-->
-        <!--                    android:layout_height="match_parent"-->
-        <!--                    android:background="@drawable/layout_btn"-->
-        <!--                    android:fontFamily="sans-serif-medium"-->
-        <!--                    android:textColor="@android:color/white"-->
-        <!--                    android:text="Chat"/>-->
-
-
-        <!--            </LinearLayout>-->
-        <!--        </RelativeLayout>-->
     </RelativeLayout>
+
 </androidx.cardview.widget.CardView>

@@ -57,8 +57,11 @@ public class ChatActivity extends AppCompatActivity {
                 // Write a message to the database
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference("message");
-                myRef.setValue(new ChatMessage(input.getText().toString(), name));
-                messagesList.add(new ChatMessage(input.getText().toString(), name));
+
+                Log.e("test",""+input.getText().toString());
+                myRef.setValue(new ChatMessage(input.getText().toString(), "kavitha pasupuleti","14-11-2022 08:57PM"));
+                messagesList.add(new ChatMessage(input.getText().toString(), "kavitha pasupuleti","14-11-2022 08:57PM"));
+
                 chatAdapter = new ChatAdapter(ChatActivity.this,messagesList);
                 recyclerView.setAdapter(chatAdapter);
 
@@ -82,9 +85,9 @@ public class ChatActivity extends AppCompatActivity {
 
     private ArrayList<ChatMessage> createMessagesList(){
         messagesList = new ArrayList<ChatMessage>();
-        messagesList.add(new ChatMessage("Sample message","Kavitha Pasupuleti"));
-        messagesList.add(new ChatMessage("Sample message","Kavitha Pasupuleti"));
-        messagesList.add(new ChatMessage("Sample message","Kavitha Pasupuleti"));
+        messagesList.add(new ChatMessage("Hi I would like to explore some fictional books. Any suggestions?","Kavitha Pasupuleti","14-11-2022 07:04 PM"));
+        messagesList.add(new ChatMessage("I can help you with that","Sibangee Mohanty","14-11-2022  07:34 PM"));
+        messagesList.add(new ChatMessage("@Kavitha, Hi I want to Ikigai book and I am ready for an exchange","Harsh Munawala","14-11-2022 08:11 PM"));
         return messagesList;
     }
 

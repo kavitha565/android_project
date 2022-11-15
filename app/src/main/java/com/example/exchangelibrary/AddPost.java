@@ -62,7 +62,7 @@ EditText title,author,genre,review,summary,location;
         Button postBtn = (Button) findViewById(R.id.post);
         postBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                if( TextUtils.isEmpty(title.getText()) && TextUtils.isEmpty(author.getText()) && TextUtils.isEmpty(genre.getText()) && TextUtils.isEmpty(review.getText()) && TextUtils.isEmpty(summary.getText()) && TextUtils.isEmpty(location.getText())) {
+                if( TextUtils.isEmpty(title.getText()) || TextUtils.isEmpty(author.getText()) || TextUtils.isEmpty(genre.getText()) || TextUtils.isEmpty(review.getText()) || TextUtils.isEmpty(summary.getText()) || TextUtils.isEmpty(location.getText())) {
                     Toast.makeText(getApplication(),"Field should not be empty", Toast.LENGTH_LONG).show();
                 }
                 else{

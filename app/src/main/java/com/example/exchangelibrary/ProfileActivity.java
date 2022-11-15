@@ -56,27 +56,7 @@ public class ProfileActivity extends AppCompatActivity {
     private ArrayList<PostFeed> createPostFeeds(){
         postFeedsList = new ArrayList<PostFeed>();
         postFeedsList.add(new PostFeed(
-                "Test User",
-                "Title: Letting Go",
-                "Author: Philip Roth",
-                "Summary: Letting Go by Philip Roth is a book my father handed me. Only one novel a year, on average, was read by Dad. He read hundreds of scholarly non-fiction books each year because he studied politics.",
-                "Genre: Fictional",
-                "Review: Good",
-                "Rating: 4/5",
-                "Status: In hand",
-                "Location: Texas"));
-        postFeedsList.add(new PostFeed(
-                "Test User",
-                "Title: Letting Go",
-                "Author: Philip Roth",
-                "Summary: Letting Go by Philip Roth is a book my father handed me. Only one novel a year, on average, was read by Dad. He read hundreds of scholarly non-fiction books each year because he studied politics.",
-                "Genre: Fictional",
-                "Review: Good",
-                "Rating: 4/5",
-                "Status: In hand",
-                "Location: Texas"));
-        postFeedsList.add(new PostFeed(
-                "Test User",
+                "Kavitha Pasupuleti",
                 "Title: Letting Go",
                 "Author: Philip Roth",
                 "Summary: Letting Go by Philip Roth is a book my father handed me. Only one novel a year, on average, was read by Dad. He read hundreds of scholarly non-fiction books each year because he studied politics.",
