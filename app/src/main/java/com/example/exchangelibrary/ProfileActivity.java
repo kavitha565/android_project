@@ -1,10 +1,14 @@
 package com.example.exchangelibrary;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +31,7 @@ public class ProfileActivity extends AppCompatActivity {
     ArrayList<PostFeed> postFeedsList;
     String name;
     TextView profile_name;
+    ImageView profile_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,15 @@ public class ProfileActivity extends AppCompatActivity {
 
         userFeedAdapter = new UserFeedAdapter(this,postFeedsList);
         recyclerView.setAdapter(userFeedAdapter);
+
+        profile_image = findViewById(R.id.profileimage);
+
+//        profile_image.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                getContent.launch("image/*");
+//            }
+//        });
 
         profile_name = findViewById(R.id.profilename);
 
@@ -85,4 +99,16 @@ public class ProfileActivity extends AppCompatActivity {
                 "Location: Texas"));
         return postFeedsList;
     }
+
+//    ActivityResultLauncher<String> getContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+//            new ActivityResultCallback<Uri>() {
+//                @Override
+//                public void onActivityResult(Uri result) {
+//                    if(result != null){
+//                        profile_image.setImageURI(result);
+//
+//                    }
+//                }
+//            }
+//    );
 }
