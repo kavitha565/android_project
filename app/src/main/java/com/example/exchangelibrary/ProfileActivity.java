@@ -6,11 +6,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -19,6 +25,8 @@ public class ProfileActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     UserFeedAdapter userFeedAdapter;
     ArrayList<PostFeed> postFeedsList;
+    String name;
+    TextView profile_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +40,16 @@ public class ProfileActivity extends AppCompatActivity {
         userFeedAdapter = new UserFeedAdapter(this,postFeedsList);
         recyclerView.setAdapter(userFeedAdapter);
 
+        profile_name = findViewById(R.id.profilename);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            name = user.getDisplayName();
+            profile_name.setText(name);
+
+        }
+
+        Log.e("Name",""+name);
 
         //Redirect to add post page
         Button addPostButton = (Button) findViewById(R.id.addPost);

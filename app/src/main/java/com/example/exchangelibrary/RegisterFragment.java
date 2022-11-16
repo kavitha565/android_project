@@ -102,6 +102,7 @@ public class RegisterFragment extends Fragment {
                                     if (task.isSuccessful()) {
                                         probar.setVisibility(View.GONE);
                                         Log.d("Success", "User profile is updated");
+                                        FirebaseAuth.getInstance().signOut();
                                     }
                                 }
                             });

@@ -45,16 +45,17 @@
             <ImageView
                 android:layout_marginTop="20dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:src="@drawable/profilepic"/>
             <TextView
+                android:id="@+id/profilename"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Wiliam Snoe"
-                android:textColor="#fff"
+                android:textColor="@color/white"
                 android:textStyle="bold"
                 android:textSize="21sp"/>
         </LinearLayout>

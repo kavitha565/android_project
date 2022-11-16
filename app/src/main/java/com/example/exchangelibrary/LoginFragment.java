@@ -40,22 +40,29 @@ public class LoginFragment extends Fragment {
         Button loginBtn = (Button) root.findViewById(R.id.btn_login);
         probar = (ProgressBar) root.findViewById(R.id.progressbar);
 
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String emailid = email.getText().toString();
-                String passd = password.getText().toString();
 
-                if (TextUtils.isEmpty(emailid) && TextUtils.isEmpty(passd)) {
-                    Toast.makeText(getActivity(),"Field can't be empty",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    probar.setVisibility(View.VISIBLE);
-                    loginAccount(emailid,passd);
-                }
-            }
-        });
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            Log.e("User",""+user);
+            Intent intent = new Intent(getActivity(), HomeActivity.class);
+            startActivity(intent);
+        } else {
+            loginBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String emailid = email.getText().toString();
+                    String passd = password.getText().toString();
 
+                    if (TextUtils.isEmpty(emailid) && TextUtils.isEmpty(passd)) {
+                        Toast.makeText(getActivity(),"Field can't be empty",Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        probar.setVisibility(View.VISIBLE);
+                        loginAccount(emailid,passd);
+                    }
+                }
+            });
+        }
         return root;
     }
 

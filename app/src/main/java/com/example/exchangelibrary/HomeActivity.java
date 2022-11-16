@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -34,11 +35,12 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     FirebaseAuth mAuth;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -75,6 +77,8 @@ public class HomeActivity extends AppCompatActivity {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigration_open,R.string.navigration_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.bringToFront();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -98,6 +102,26 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.logout: {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.profile:{
+                Intent intent = new Intent(this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        }
+        //close navigation drawer
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
@@ -148,8 +172,6 @@ public class HomeActivity extends AppCompatActivity {
                 searchView.onActionViewCollapsed();
                 feed.setVisibility(View.VISIBLE);
                 searchfeed.setVisibility(View.GONE);
-//                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-//                startActivity(intent);
                 return false;
             }
         });
@@ -168,7 +190,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private ArrayList<PostFeed> createPostFeeds(){
-        postFeedsList = new ArrayList<PostFeed>();
+        postFeedsList = new ArrayList<>();
         postFeedsList.add(new PostFeed(
                 "Kavitha Pasupuleti",
                 "Title: Ikigai",
