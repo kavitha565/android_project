@@ -1,32 +1,74 @@
 package com.example.exchangelibrary;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
+
+import java.util.ArrayList;
+
 public class AddPost extends AppCompatActivity {
-Spinner spinner;
-String[] statuss = {"In hand","In-progress", "Completed", "Open to exchange", "Swapped"};
-ImageView imageView;
-EditText title,author,genre,review,summary,location;
+    String name;
+    Spinner spinner;
+    String[] statuss = {"In hand","In-progress", "Completed", "Open to exchange", "Swapped"};
+    ImageView imageView;
+    ArrayList<PostFeed> postFeedsList = new ArrayList<>();
+    Upload uploadedFile;
+
+    StorageTask mUploadTask;
+    EditText title,author,genre,review,summary,location;
+    RatingBar rating;
+    Uri imageUrl;
+
+    StorageReference storageRef;
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_post);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            name = user.getDisplayName();
+        }
+
+        storageRef = FirebaseStorage.getInstance().getReference("uploads");
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("postFeeds");
+
         spinner= findViewById(R.id.spin);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(AddPost.this, android.R.layout.simple_list_item_1, statuss);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
@@ -38,6 +80,7 @@ EditText title,author,genre,review,summary,location;
         review = findViewById(R.id.review);
         summary = findViewById(R.id.summary);
         location = findViewById(R.id.location);
+        rating = findViewById(R.id.ratingbar);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -66,8 +109,15 @@ EditText title,author,genre,review,summary,location;
                     Toast.makeText(getApplication(),"Field should not be empty", Toast.LENGTH_LONG).show();
                 }
                 else{
-                    Intent intent = new Intent(AddPost.this, ProfileActivity.class);
-                    startActivity(intent);
+
+                    //Add image to storage
+                    uploadFile();
+                    //Add post ot Database
+//                    postFeedsList.add(new PostFeed(name, title.getText().toString(), author.getText().toString(), summary.getText().toString(), genre.getText().toString(), review.getText().toString(), Float.toString(rating.getRating()), spinner.getSelectedItem().toString(), location.getText().toString(),uploadedFile.imageUrl.toString()));
+//                    Log.e("info",postFeedsList.toString());
+//                    myRef.setValue(postFeedsList);
+//                    Intent intent = new Intent(AddPost.this, ProfileActivity.class);
+//                    startActivity(intent);
                     Toast.makeText(getApplication(),"Post added successfully",Toast.LENGTH_LONG).show();
                 }
             }
@@ -82,11 +132,56 @@ EditText title,author,genre,review,summary,location;
         });
 
 }
+
+    private String getFileExtension(Uri uri){
+        ContentResolver contentResolver = getContentResolver();
+        MimeTypeMap mimeType = MimeTypeMap.getSingleton();
+        return mimeType.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+
+    private void uploadFile(){
+        if(imageUrl != null){
+            StorageReference fileRef = storageRef.child(System.currentTimeMillis()+"."+getFileExtension(imageUrl));
+            fileRef.putFile(imageUrl)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    final Uri downloadUrl = uri;
+                                    uploadedFile = new Upload("No name",downloadUrl.toString());
+                                    //String uploadId = myRef.push().getKey();
+                                    //myRef.child(uploadId).setValue(upload);
+                                }
+                            });
+                            Toast.makeText(AddPost.this, "uploaded sucessfully", Toast.LENGTH_SHORT).show();
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(AddPost.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                            Toast.makeText(AddPost.this, "Upload in progress", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }else{
+            Toast.makeText(this, "No file selected", Toast.LENGTH_LONG).show();
+        }
+    }
+
     ActivityResultLauncher<String> getContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
             new ActivityResultCallback<Uri>() {
                 @Override
                 public void onActivityResult(Uri result) {
                     if(result != null){
+                        imageUrl = result;
                         imageView.setImageURI(result);
 
                     }

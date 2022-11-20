@@ -29,11 +29,17 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.security.PublicKey;
 import java.util.ArrayList;
@@ -41,6 +47,7 @@ import java.util.Arrays;
 import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    String username;
     FirebaseAuth mAuth;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -55,7 +62,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     SearchView searchView;
     RecyclerView recyclerView;
     PostFeedAdapter postAdapter;
-    ArrayList<PostFeed> postFeedsList;
+    ArrayList<PostFeed> postFeedsList = new ArrayList<PostFeed>();
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("postFeeds");
     // ActionBarDrawerToggle toggle;
     private FirebaseAuth.AuthStateListener authStateListener;
 
@@ -65,6 +74,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_home);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        username = user.getDisplayName();
 
         drawerLayout = findViewById(R.id.drawerlayout);
         navigationView = findViewById(R.id.navigationview);
@@ -87,12 +97,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         listView.setAdapter(arrayAdapter);
         tempArr.clear();
 
-        ArrayList<PostFeed> postFeedsList = createPostFeeds();
+
         recyclerView = findViewById(R.id.post_feeds_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        postAdapter = new PostFeedAdapter(this,postFeedsList);
-        recyclerView.setAdapter(postAdapter);
+
+
+        this.showPostFeeds();
 
         FloatingActionButton chatButton = (FloatingActionButton) findViewById(R.id.chatBtn);
         chatButton.setOnClickListener(new View.OnClickListener() {
@@ -189,38 +200,70 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private ArrayList<PostFeed> createPostFeeds(){
-        postFeedsList = new ArrayList<>();
-        postFeedsList.add(new PostFeed(
-                "Kavitha Pasupuleti",
-                "Title: Ikigai",
-                "Author: Hector Gracia",
-                "Summary: In researching this book, the authors interviewed the residents of the Japanese village.",
-                "Genre: Philosophy",
-                "Review: Good for self learning",
-                "Rating: 4/5",
-                "Status In hand",
-                "Location: Texas"));
-        postFeedsList.add(new PostFeed(
-                "Sibangee Mohanty",
-                "Title: The Intelligent Investor",
-                "Author: Benjamin Graham",
-                "Summary: Over the years, market developments have proven the wisdom of Graham's strategies. While preserving the integrity of Graham's original text, this revised edition includes updated commentary by noted financial journalist Jason Zweig, whose perspective incorporates the realities of today's market, draws parallels between Graham's examples and today's financial headlines. ",
-                "Genre: Economics",
-                "Review: Best for personal finance",
-                "Rating: 5/5",
-                "Status In hand",
-                "Location: Texas"));
-        postFeedsList.add(new PostFeed(
-                "Harsh Muniwala",
-                "Title: Atomic Habits",
-                "Author: James Clear",
-                "Summary: If you're having trouble changing your habits, the problem isn't you. The problem is your system. Bad habits repeat themselves again and again not because you don't want to change, but because you have the wrong system for change. You do not rise to the level of your goals. You fall to the level of your systems.",
-                "Genre: Self-help",
-                "Review: Average",
-                "Rating: 3.5/5",
-                "Status In hand",
-                "Location: Texas"));
-        return postFeedsList;
+    private void showPostFeeds() {
+
+        myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (task.getResult().exists()) {
+                        DataSnapshot dataSnapshot = task.getResult();
+                        Log.e("data", ""+dataSnapshot.getValue());
+                        for (DataSnapshot ALL_USERS: dataSnapshot.getChildren()) {
+                            String username = ALL_USERS.child("username").getValue().toString();
+                            String title = "Title: "+ALL_USERS.child("title").getValue().toString();
+                            String author = "Author: "+ALL_USERS.child("author").getValue().toString();
+                            String summary = "Summary: "+ALL_USERS.child("summary").getValue().toString();
+                            String genre = "Genre: "+ALL_USERS.child("genre").getValue().toString();
+                            String review = "Review: "+ALL_USERS.child("review").getValue().toString();
+                            String rating = "Rating: "+ALL_USERS.child("rating").getValue().toString();
+                            String location = "Location: "+ALL_USERS.child("location").getValue().toString();
+                            String coverpage = ALL_USERS.child("coverPage").getValue().toString();
+                            postFeedsList.add(new PostFeed(username,title,author,summary,genre,review,rating,"In hand",location,coverpage));
+                            postAdapter = new PostFeedAdapter(HomeActivity.this,postFeedsList);
+                            recyclerView.setAdapter(postAdapter);
+                        }
+                    }
+                }
+                else{
+                    Toast.makeText(HomeActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
+
+//    private ArrayList<PostFeed> createPostFeeds(){
+//        postFeedsList = new ArrayList<>();
+//        postFeedsList.add(new PostFeed(
+//                "Kavitha Pasupuleti",
+//                "Title: Ikigai",
+//                "Author: Hector Gracia",
+//                "Summary: In researching this book, the authors interviewed the residents of the Japanese village.",
+//                "Genre: Philosophy",
+//                "Review: Good for self learning",
+//                "Rating: 4/5",
+//                "Status In hand",
+//                "Location: Texas"));
+//        postFeedsList.add(new PostFeed(
+//                "Sibangee Mohanty",
+//                "Title: The Intelligent Investor",
+//                "Author: Benjamin Graham",
+//                "Summary: Over the years, market developments have proven the wisdom of Graham's strategies. While preserving the integrity of Graham's original text, this revised edition includes updated commentary by noted financial journalist Jason Zweig, whose perspective incorporates the realities of today's market, draws parallels between Graham's examples and today's financial headlines. ",
+//                "Genre: Economics",
+//                "Review: Best for personal finance",
+//                "Rating: 5/5",
+//                "Status In hand",
+//                "Location: Texas"));
+//        postFeedsList.add(new PostFeed(
+//                "Harsh Muniwala",
+//                "Title: Atomic Habits",
+//                "Author: James Clear",
+//                "Summary: If you're having trouble changing your habits, the problem isn't you. The problem is your system. Bad habits repeat themselves again and again not because you don't want to change, but because you have the wrong system for change. You do not rise to the level of your goals. You fall to the level of your systems.",
+//                "Genre: Self-help",
+//                "Review: Average",
+//                "Rating: 3.5/5",
+//                "Status In hand",
+//                "Location: Texas"));
+//        return postFeedsList;
+//    }
 }

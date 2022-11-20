@@ -1,10 +1,13 @@
 package com.example.exchangelibrary;
 
 import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,12 +40,13 @@ public class PostFeedAdapter extends RecyclerView.Adapter<PostFeedAdapter.MyView
         holder.username.setText(post.getUsername());
         holder.title.setText(post.getTitle());
         holder.author.setText(post.getAuthor());
+        holder.coverPage.setImageURI(Uri.parse(post.getCoverPage()));
+        Log.e("info","Url is"+Uri.parse(post.getCoverPage()));
         holder.summary.setText(post.getSummary());
         holder.genre.setText(post.getGenre());
         holder.review.setText(post.getReview());
         holder.rating.setText(post.getRating());
         holder.location.setText(post.getLocation());
-
     }
 
     @Override
@@ -55,6 +59,7 @@ public class PostFeedAdapter extends RecyclerView.Adapter<PostFeedAdapter.MyView
         TextView username, title, author, summary, genre, review, rating, location;
         RatingBar rate;
         Button btn;
+        ImageView coverPage;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -67,6 +72,7 @@ public class PostFeedAdapter extends RecyclerView.Adapter<PostFeedAdapter.MyView
             rating = itemView.findViewById(R.id.rating);
             location = itemView.findViewById(R.id.location);
             rate = itemView.findViewById(R.id.ratingBar);
+            coverPage = itemView.findViewById(R.id.book_img);
             btn = itemView.findViewById(R.id.btnGet);
 
             btn.setOnClickListener(new View.OnClickListener() {
