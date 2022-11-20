@@ -34,7 +34,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     UserFeedAdapter userFeedAdapter;
-    String name;
+    String name, userId;
     TextView profile_name;
     ImageView profile_image;
     ArrayList<PostFeed> postFeedsList = new ArrayList<PostFeed>();
@@ -66,6 +66,7 @@ public class ProfileActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             name = user.getDisplayName();
+            userId = user.getUid();
             profile_name.setText(name);
 
         }
@@ -102,21 +103,22 @@ public class ProfileActivity extends AppCompatActivity {
                         DataSnapshot dataSnapshot = task.getResult();
                         Log.e("data", "" + dataSnapshot.getValue());
                         for (DataSnapshot ALL_USERS : dataSnapshot.getChildren()) {
+                            String dbUserId = ALL_USERS.child("userId").getValue().toString();
                             String username = ALL_USERS.child("username").getValue().toString();
-                           // Log.e("info","database name: "+username+"username: "+name);
-                            boolean check = ALL_USERS.child("username").getValue().toString() == name.toString();
-                            Log.e("info","username:"+ALL_USERS.child("username").getValue().toString()+"name:"+name+"check:"+String.valueOf(check));
-                                String title = "Title: " + ALL_USERS.child("title").getValue().toString();
-                                String author = "Author: " + ALL_USERS.child("author").getValue().toString();
-                                String summary = "Summary: " + ALL_USERS.child("summary").getValue().toString();
-                                String genre = "Genre: " + ALL_USERS.child("genre").getValue().toString();
-                                String review = "Review: " + ALL_USERS.child("review").getValue().toString();
-                                String rating = "Rating: " + ALL_USERS.child("rating").getValue().toString();
-                                String location = "Location: " + ALL_USERS.child("location").getValue().toString();
-                                String coverPage = ALL_USERS.child("coverPage").getValue().toString();
-                                postFeedsList.add(new PostFeed(name, title, author, summary, genre, review, rating, "In hand", location,coverPage));
+                            if(dbUserId.equals(userId)){
+                                String title = ALL_USERS.child("title").getValue().toString();
+                                String author = ALL_USERS.child("author").getValue().toString();
+                                String summary = ALL_USERS.child("summary").getValue().toString();
+                                String genre = ALL_USERS.child("genre").getValue().toString();
+                                String review = ALL_USERS.child("review").getValue().toString();
+                                String rating = ALL_USERS.child("rating").getValue().toString();
+                                String location = ALL_USERS.child("location").getValue().toString();
+                                String coverpage = ALL_USERS.child("coverPage").getValue().toString();
+                                String status = ALL_USERS.child("status").getValue().toString();
+                                postFeedsList.add(new PostFeed(userId, username, title, author, summary, genre, review, rating, status, location,coverpage));
                                 userFeedAdapter = new UserFeedAdapter(ProfileActivity.this, postFeedsList);
                                 recyclerView.setAdapter(userFeedAdapter);
+                            }
 
                         }
                     }

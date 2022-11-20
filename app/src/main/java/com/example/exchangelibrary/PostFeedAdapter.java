@@ -15,6 +15,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 public class PostFeedAdapter extends RecyclerView.Adapter<PostFeedAdapter.MyViewHolder> {
@@ -40,13 +42,15 @@ public class PostFeedAdapter extends RecyclerView.Adapter<PostFeedAdapter.MyView
         holder.username.setText(post.getUsername());
         holder.title.setText(post.getTitle());
         holder.author.setText(post.getAuthor());
-        holder.coverPage.setImageURI(Uri.parse(post.getCoverPage()));
-        Log.e("info","Url is"+Uri.parse(post.getCoverPage()));
+        Picasso.get().load(Uri.parse(post.getCoverPage())).into(holder.coverPage);
         holder.summary.setText(post.getSummary());
         holder.genre.setText(post.getGenre());
         holder.review.setText(post.getReview());
         holder.rating.setText(post.getRating());
+        holder.status.setText(post.getStatus());
         holder.location.setText(post.getLocation());
+        holder.rate.setRating(Float.parseFloat(post.getRating()));
+
     }
 
     @Override
@@ -56,7 +60,7 @@ public class PostFeedAdapter extends RecyclerView.Adapter<PostFeedAdapter.MyView
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView username, title, author, summary, genre, review, rating, location;
+        TextView username, title, author, summary, genre, review, rating, location, status;
         RatingBar rate;
         Button btn;
         ImageView coverPage;
@@ -74,6 +78,7 @@ public class PostFeedAdapter extends RecyclerView.Adapter<PostFeedAdapter.MyView
             rate = itemView.findViewById(R.id.ratingBar);
             coverPage = itemView.findViewById(R.id.book_img);
             btn = itemView.findViewById(R.id.btnGet);
+            status = itemView.findViewById(R.id.status);
 
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -24,10 +23,13 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -39,9 +41,9 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 
 public class AddPost extends AppCompatActivity {
-    String name;
+    String name, userId;
     Spinner spinner;
-    String[] statuss = {"In hand","In-progress", "Completed", "Open to exchange", "Swapped"};
+    String[] statusList = {"In hand","In-progress", "Completed", "Open to exchange", "Swapped"};
     ImageView imageView;
     ArrayList<PostFeed> postFeedsList = new ArrayList<>();
     Upload uploadedFile;
@@ -49,11 +51,11 @@ public class AddPost extends AppCompatActivity {
     StorageTask mUploadTask;
     EditText title,author,genre,review,summary,location;
     RatingBar rating;
-    Uri imageUrl;
+    Uri imageUri;
 
-    StorageReference storageRef;
-    FirebaseDatabase database;
-    DatabaseReference myRef;
+    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("postFeeds");
+    StorageReference storageRef = FirebaseStorage.getInstance().getReference("uploads");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,14 +65,11 @@ public class AddPost extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             name = user.getDisplayName();
+            userId = user.getUid();
         }
 
-        storageRef = FirebaseStorage.getInstance().getReference("uploads");
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("postFeeds");
-
         spinner= findViewById(R.id.spin);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddPost.this, android.R.layout.simple_list_item_1, statuss);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddPost.this, android.R.layout.simple_list_item_1, statusList);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 
         imageView = findViewById(R.id.bookCover);
@@ -95,6 +94,9 @@ public class AddPost extends AppCompatActivity {
             }
         });
 
+        //get posts from database
+        getPostFeeds();
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,16 +111,8 @@ public class AddPost extends AppCompatActivity {
                     Toast.makeText(getApplication(),"Field should not be empty", Toast.LENGTH_LONG).show();
                 }
                 else{
-
                     //Add image to storage
-                    uploadFile();
-                    //Add post ot Database
-//                    postFeedsList.add(new PostFeed(name, title.getText().toString(), author.getText().toString(), summary.getText().toString(), genre.getText().toString(), review.getText().toString(), Float.toString(rating.getRating()), spinner.getSelectedItem().toString(), location.getText().toString(),uploadedFile.imageUrl.toString()));
-//                    Log.e("info",postFeedsList.toString());
-//                    myRef.setValue(postFeedsList);
-//                    Intent intent = new Intent(AddPost.this, ProfileActivity.class);
-//                    startActivity(intent);
-                    Toast.makeText(getApplication(),"Post added successfully",Toast.LENGTH_LONG).show();
+                    uploadImage();
                 }
             }
         });
@@ -133,47 +127,78 @@ public class AddPost extends AppCompatActivity {
 
 }
 
+    private void getPostFeeds() {
+        databaseRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (task.getResult().exists()) {
+                        DataSnapshot dataSnapshot = task.getResult();
+                        Log.e("data", ""+dataSnapshot.getValue());
+                        for (DataSnapshot ALL_USERS: dataSnapshot.getChildren()) {
+                            String userId = ALL_USERS.child("userId").getValue().toString();
+                            String username = ALL_USERS.child("username").getValue().toString();
+                            String title = ALL_USERS.child("title").getValue().toString();
+                            String author = ALL_USERS.child("author").getValue().toString();
+                            String summary = ALL_USERS.child("summary").getValue().toString();
+                            String genre = ALL_USERS.child("genre").getValue().toString();
+                            String review = ALL_USERS.child("review").getValue().toString();
+                            String rating = ALL_USERS.child("rating").getValue().toString();
+                            String location = ALL_USERS.child("location").getValue().toString();
+                            String coverpage = ALL_USERS.child("coverPage").getValue().toString();
+                            String status = ALL_USERS.child("status").getValue().toString();
+                            postFeedsList.add(new PostFeed(userId,username,title,author,summary,genre,review,rating,status,location,coverpage));
+                        }
+                    }
+                }
+                else{
+                    Toast.makeText(AddPost.this, "Error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
     private String getFileExtension(Uri uri){
         ContentResolver contentResolver = getContentResolver();
         MimeTypeMap mimeType = MimeTypeMap.getSingleton();
         return mimeType.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-    private void uploadFile(){
-        if(imageUrl != null){
-            StorageReference fileRef = storageRef.child(System.currentTimeMillis()+"."+getFileExtension(imageUrl));
-            fileRef.putFile(imageUrl)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+    private void uploadImage(){
+        if(imageUri != null){
+            StorageReference fileRef = storageRef.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
+            fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    final Uri downloadUrl = uri;
-                                    uploadedFile = new Upload("No name",downloadUrl.toString());
-                                    //String uploadId = myRef.push().getKey();
-                                    //myRef.child(uploadId).setValue(upload);
-                                }
-                            });
-                            Toast.makeText(AddPost.this, "uploaded sucessfully", Toast.LENGTH_SHORT).show();
-
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(AddPost.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                            Toast.makeText(AddPost.this, "Upload in progress", Toast.LENGTH_SHORT).show();
+                        public void onSuccess(Uri uri) {
+                            uploadPost(uri);
                         }
                     });
-        }else{
-            Toast.makeText(this, "No file selected", Toast.LENGTH_LONG).show();
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                    Toast.makeText(AddPost.this,"Upload in progress", Toast.LENGTH_LONG).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e("error",e.getMessage());
+                }
+            });
         }
+    }
+
+    private void uploadPost(Uri uri){
+        //Add post ot Database
+        postFeedsList.add(new PostFeed(userId, name, title.getText().toString(), author.getText().toString(), summary.getText().toString(), genre.getText().toString(), review.getText().toString(), Float.toString(rating.getRating()), spinner.getSelectedItem().toString(), location.getText().toString(), uri.toString()));
+        Log.e("info",postFeedsList.toString());
+        databaseRef.setValue(postFeedsList);
+        Intent intent = new Intent(AddPost.this, ProfileActivity.class);
+        startActivity(intent);
+        Toast.makeText(getApplication(),"Post added successfully",Toast.LENGTH_LONG).show();
     }
 
     ActivityResultLauncher<String> getContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
@@ -181,12 +206,13 @@ public class AddPost extends AppCompatActivity {
                 @Override
                 public void onActivityResult(Uri result) {
                     if(result != null){
-                        imageUrl = result;
+                        imageUri = result;
                         imageView.setImageURI(result);
 
                     }
                 }
             }
     );
+
 
 }

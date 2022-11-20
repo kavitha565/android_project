@@ -47,7 +47,6 @@ import java.util.Arrays;
 import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    String username;
     FirebaseAuth mAuth;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -72,9 +71,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        username = user.getDisplayName();
 
         drawerLayout = findViewById(R.id.drawerlayout);
         navigationView = findViewById(R.id.navigationview);
@@ -210,18 +206,22 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         DataSnapshot dataSnapshot = task.getResult();
                         Log.e("data", ""+dataSnapshot.getValue());
                         for (DataSnapshot ALL_USERS: dataSnapshot.getChildren()) {
+                            String userId = ALL_USERS.child("userId").getValue().toString();
                             String username = ALL_USERS.child("username").getValue().toString();
-                            String title = "Title: "+ALL_USERS.child("title").getValue().toString();
-                            String author = "Author: "+ALL_USERS.child("author").getValue().toString();
-                            String summary = "Summary: "+ALL_USERS.child("summary").getValue().toString();
-                            String genre = "Genre: "+ALL_USERS.child("genre").getValue().toString();
-                            String review = "Review: "+ALL_USERS.child("review").getValue().toString();
-                            String rating = "Rating: "+ALL_USERS.child("rating").getValue().toString();
-                            String location = "Location: "+ALL_USERS.child("location").getValue().toString();
-                            String coverpage = ALL_USERS.child("coverPage").getValue().toString();
-                            postFeedsList.add(new PostFeed(username,title,author,summary,genre,review,rating,"In hand",location,coverpage));
-                            postAdapter = new PostFeedAdapter(HomeActivity.this,postFeedsList);
-                            recyclerView.setAdapter(postAdapter);
+                            if(!userId.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                                String title = ALL_USERS.child("title").getValue().toString();
+                                String author = ALL_USERS.child("author").getValue().toString();
+                                String summary = ALL_USERS.child("summary").getValue().toString();
+                                String genre = ALL_USERS.child("genre").getValue().toString();
+                                String review = ALL_USERS.child("review").getValue().toString();
+                                String rating = ALL_USERS.child("rating").getValue().toString();
+                                String location = ALL_USERS.child("location").getValue().toString();
+                                String coverpage = ALL_USERS.child("coverPage").getValue().toString();
+                                String status = ALL_USERS.child("status").getValue().toString();
+                                postFeedsList.add(new PostFeed(userId,username,title,author,summary,genre,review,rating,status,location,coverpage));
+                                postAdapter = new PostFeedAdapter(HomeActivity.this,postFeedsList);
+                                recyclerView.setAdapter(postAdapter);
+                            }
                         }
                     }
                 }
