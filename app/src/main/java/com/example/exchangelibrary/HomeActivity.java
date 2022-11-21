@@ -7,44 +7,30 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
+
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     FirebaseAuth mAuth;
@@ -52,9 +38,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     Toolbar toolbar;
     ListView listView;
-    ArrayList<String>  initName = new ArrayList<>(Arrays.asList("Ikigai", "The Intelligent Investor", "Atomic Habits"));
-    ArrayList<String>  name = new ArrayList<>(Arrays.asList("Ikigai", "The Intelligent Investor", "Atomic Habits"));
-    ArrayList<String>  tempArr = name;
+    ArrayList<String>  initName, name, tempArr;
     boolean isSearching = false;
     ArrayAdapter<String> arrayAdapter;
     View feed,searchfeed;
@@ -64,7 +48,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     ArrayList<PostFeed> postFeedsList = new ArrayList<PostFeed>();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("postFeeds");
-    // ActionBarDrawerToggle toggle;
+    String search_username;
     private FirebaseAuth.AuthStateListener authStateListener;
 
     @Override
@@ -77,9 +61,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         toolbar = findViewById(R.id.toolbar);
         feed = findViewById(R.id.feedview);
         searchfeed = findViewById(R.id.searchinfo);
+        initName = new ArrayList<>();
+        name = new ArrayList<>();
+        tempArr = name;
 
         setSupportActionBar(toolbar);
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigration_open,R.string.navigration_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
@@ -92,12 +78,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         arrayAdapter =new ArrayAdapter<String>( this, android.R.layout.simple_list_item_1,tempArr);
         listView.setAdapter(arrayAdapter);
         tempArr.clear();
-
-
         recyclerView = findViewById(R.id.post_feeds_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
 
         this.showPostFeeds();
 
@@ -126,7 +108,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
             }
         }
-        //close navigation drawer
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -151,24 +132,33 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return false;
+                searchView.clearFocus();
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 feed.setVisibility(View.GONE);
 
-                Log.e("Testing",""+newText);
                 tempArr.clear();
                 arrayAdapter.notifyDataSetChanged();
-                Log.e("Testng", " Init name size is " + initName.size());
                 for (int i = 0; i< initName.size(); i++) {
-                    Log.e("Testng", " Item is " + initName.get(i).toString());
                     if(initName.get(i).toLowerCase().contains(newText.toString().toLowerCase())){
                         arrayAdapter.add(initName.get(i));
                     }
                 }
-                Log.e("Testng", " tempArr is " + tempArr.toString());
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        if (tempArr.size() == 1){
+                            search_username = tempArr.get(i);
+                            String str = Arrays.toString(tempArr.toArray());
+                            Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+                            intent.putExtra("USERNAME", search_username);
+                            view.getContext().startActivity(intent);
+                        }
+                    }
+                });
                 return false;
             }
         });
@@ -203,11 +193,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 if (task.isSuccessful()) {
                     if (task.getResult().exists()) {
                         DataSnapshot dataSnapshot = task.getResult();
-                        Log.e("data", ""+dataSnapshot.getValue());
                         for (DataSnapshot ALL_USERS: dataSnapshot.getChildren()) {
                             String userId = ALL_USERS.child("userId").getValue().toString();
                             String username = ALL_USERS.child("username").getValue().toString();
-//                            if(!userId.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
                             String title = ALL_USERS.child("title").getValue().toString();
                             String author = ALL_USERS.child("author").getValue().toString();
                             String summary = ALL_USERS.child("summary").getValue().toString();
@@ -219,8 +207,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             String status = ALL_USERS.child("status").getValue().toString();
                             postFeedsList.add(new PostFeed(userId,username,title,author,summary,genre,review,rating,status,location,coverpage));
                             postAdapter = new PostFeedAdapter(HomeActivity.this,postFeedsList);
+                            initName.add(username);
+                            name.add(username);
                             recyclerView.setAdapter(postAdapter);
-//                            }
                         }
                     }
                 }

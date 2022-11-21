@@ -53,8 +53,6 @@ public class RegisterFragment extends Fragment {
                 String passd = password.getText().toString();
                 String username = name.getText().toString();
                 String confPasswd = confirmpassword.getText().toString();
-
-
                 String emailRegx = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
                 if (TextUtils.isEmpty(emailid) && TextUtils.isEmpty(passd) && TextUtils.isEmpty(username) && TextUtils.isEmpty(confPasswd)) {
@@ -92,7 +90,6 @@ public class RegisterFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Log.d("Success", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(getActivity(),"User:"+user.getEmail()+"registered  in successfully",Toast.LENGTH_SHORT).show();
                             UserProfileChangeRequest updateProfile = new UserProfileChangeRequest.Builder().setDisplayName(username).build();
@@ -108,7 +105,7 @@ public class RegisterFragment extends Fragment {
                             });
                         }
                         else {
-                            Log.e("Error", "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(getActivity(),"" +task.getException(),Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

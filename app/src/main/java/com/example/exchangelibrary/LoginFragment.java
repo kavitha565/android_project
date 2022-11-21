@@ -43,7 +43,6 @@ public class LoginFragment extends Fragment {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            Log.e("User",""+user);
             Intent intent = new Intent(getActivity(), HomeActivity.class);
             startActivity(intent);
         } else {
@@ -73,14 +72,11 @@ public class LoginFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d("", "signInWithEmail:success");
                     FirebaseUser user = mAuth.getCurrentUser();
-                    Log.d("User","Username:"+user.getEmail()+"Logged in");
                     probar.setVisibility(View.GONE);
                     Intent intent = new Intent(getActivity(), HomeActivity.class);
                     startActivity(intent);
-//                    Toast.makeText(getActivity(),"User:"+user.getEmail()+"logged in successfully",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),"User:"+user.getEmail()+"logged in successfully",Toast.LENGTH_SHORT).show();
                 } else {
                     probar.setVisibility(View.GONE);
                     Toast.makeText(getActivity(),"" +task.getException(),Toast.LENGTH_SHORT).show();

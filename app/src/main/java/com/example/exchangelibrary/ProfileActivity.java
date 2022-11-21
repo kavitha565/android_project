@@ -104,7 +104,6 @@ public class ProfileActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     if (task.getResult().exists()) {
                         DataSnapshot dataSnapshot = task.getResult();
-                        Log.e("data", "" + dataSnapshot.getValue());
                         for (DataSnapshot ALL_USERS : dataSnapshot.getChildren()) {
                             String dbUserId = ALL_USERS.child("userId").getValue().toString();
                             String username = ALL_USERS.child("username").getValue().toString();
@@ -139,7 +138,6 @@ public class ProfileActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     if (task.getResult().exists()) {
                         DataSnapshot dataSnapshot = task.getResult();
-                        Log.e("data", "" + dataSnapshot.getValue());
                         for (DataSnapshot ALL_USERS : dataSnapshot.getChildren()) {
                             String dbUserId = ALL_USERS.child("userId").getValue().toString();
                             String username = ALL_USERS.child("username").getValue().toString();

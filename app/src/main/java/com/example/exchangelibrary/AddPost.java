@@ -134,7 +134,6 @@ public class AddPost extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     if (task.getResult().exists()) {
                         DataSnapshot dataSnapshot = task.getResult();
-                        Log.e("data", ""+dataSnapshot.getValue());
                         for (DataSnapshot ALL_USERS: dataSnapshot.getChildren()) {
                             String userId = ALL_USERS.child("userId").getValue().toString();
                             String username = ALL_USERS.child("username").getValue().toString();
@@ -194,7 +193,6 @@ public class AddPost extends AppCompatActivity {
     private void uploadPost(Uri uri){
         //Add post ot Database
         postFeedsList.add(new PostFeed(userId, name, title.getText().toString(), author.getText().toString(), summary.getText().toString(), genre.getText().toString(), review.getText().toString(), Float.toString(rating.getRating()), spinner.getSelectedItem().toString(), location.getText().toString(), uri.toString()));
-        Log.e("info",postFeedsList.toString());
         databaseRef.setValue(postFeedsList);
         Intent intent = new Intent(AddPost.this, ProfileActivity.class);
         startActivity(intent);

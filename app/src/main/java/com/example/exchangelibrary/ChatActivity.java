@@ -42,7 +42,6 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        Log.d("info", "In chat acitiviy");
 
         FloatingActionButton sendBtn = (FloatingActionButton) findViewById(R.id.send);
         recyclerView = findViewById(R.id.list_of_messages);
@@ -91,11 +90,9 @@ public class ChatActivity extends AppCompatActivity {
                     if (task.getResult().exists()) {
                         Toast.makeText(ChatActivity.this, "Successfully Read", Toast.LENGTH_SHORT).show();
                         DataSnapshot dataSnapshot = task.getResult();
-                        Log.e("data", ""+dataSnapshot.getValue());
                         for (DataSnapshot ALL_USERS: dataSnapshot.getChildren()) {
                             String messageText = ALL_USERS.child("messageText").getValue().toString();
                             String messageTime = ALL_USERS.child("messageTime").getValue().toString();
-                            Log.e("date",""+messageTime);
                             String messageUser = ALL_USERS.child("messageUser").getValue().toString();
                             ChatMessage mUser = new ChatMessage(messageText, messageUser, messageTime);
                             messagesList.add(mUser);
