@@ -40,14 +40,15 @@
         app:title="Home"
         app:titleTextColor="#FFFFFF"
         app:titleMarginStart="10dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="0dp"
         tools:ignore="MissingConstraints"/>
 
     <RelativeLayout
         android:id="@+id/feedview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar">
+        android:layout_below="@id/toolbar"
+        android:background="@color/gray">
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"

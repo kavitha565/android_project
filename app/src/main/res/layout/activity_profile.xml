@@ -74,15 +74,17 @@
                 android:dividerHeight="16dp"
                 android:divider="@android:color/transparent"
                 android:layout_marginTop="5dp"
+                android:background="@color/gray"
                 android:layout_marginBottom="10dp"/>
         </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/user_posts_button"
             android:layout_below="@id/user_posts_list"
             android:layout_width="match_parent"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="0dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="0dp"
             android:layout_height="wrap_content"
             android:gravity="center">
             <Button

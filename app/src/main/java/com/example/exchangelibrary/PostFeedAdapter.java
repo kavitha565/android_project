@@ -1,6 +1,7 @@
 package com.example.exchangelibrary;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -79,6 +80,15 @@ public class PostFeedAdapter extends RecyclerView.Adapter<PostFeedAdapter.MyView
             coverPage = itemView.findViewById(R.id.book_img);
             btn = itemView.findViewById(R.id.btnGet);
             status = itemView.findViewById(R.id.status);
+
+            username.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+                    intent.putExtra("USERNAME", username.getText().toString());
+                    view.getContext().startActivity(intent);
+                }
+            });
 
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override

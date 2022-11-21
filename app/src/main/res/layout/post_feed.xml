@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="12dp"
+    app:cardCornerRadius="10dp"
     app:cardBackgroundColor="@android:color/white"
     app:cardElevation="4dp"
     app:cardUseCompatPadding="true"
-    android:layout_marginTop="7dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginLeft="7dp"
+    android:layout_marginRight="7dp"
     android:layout_alignBottom="@id/toolbar">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -41,18 +41,19 @@
                 android:text="Test User"
                 android:textColor="@color/black"
                 android:fontFamily="sans-serif-medium"
-                android:textSize="17sp"
+                android:textSize="20sp"
                 android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp">
             </TextView>
-
         </LinearLayout>
         <LinearLayout
             android:id="@+id/title_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/profile_container"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
@@ -106,7 +107,7 @@
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:src="@drawable/book"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="10dp">
         </ImageView>
 
         <LinearLayout
