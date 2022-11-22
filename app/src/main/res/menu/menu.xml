@@ -13,6 +13,7 @@
         android:id="@+id/actionCancel"
         android:title="Search"
         android:visible="false"
+        app:itemTextColor="@color/white"
         android:icon="@android:drawable/ic_menu_close_clear_cancel"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always|collapseActionView"/>

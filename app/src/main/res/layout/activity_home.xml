@@ -41,6 +41,7 @@
         app:titleTextColor="#FFFFFF"
         app:titleMarginStart="10dp"
         android:layout_marginBottom="0dp"
+        app:theme="@style/ToolbarColoredBackArrow"
         tools:ignore="MissingConstraints"/>
 
     <RelativeLayout
