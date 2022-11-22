@@ -138,27 +138,35 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                feed.setVisibility(View.GONE);
-
-                tempArr.clear();
-                arrayAdapter.notifyDataSetChanged();
-                for (int i = 0; i< initName.size(); i++) {
-                    if(initName.get(i).toLowerCase().contains(newText.toString().toLowerCase())){
-                        arrayAdapter.add(initName.get(i));
-                    }
+                if (newText.isEmpty()){
+                    Log.e("In null search",newText);
+                    listView.setVisibility(View.GONE);
+                    feed.setVisibility(View.VISIBLE);
                 }
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        if (tempArr.size() == 1){
-                            search_username = tempArr.get(i);
-                            String str = Arrays.toString(tempArr.toArray());
-                            Intent intent = new Intent(view.getContext(), ProfileActivity.class);
-                            intent.putExtra("USERNAME", search_username);
-                            view.getContext().startActivity(intent);
+                else{
+                    Log.e("In search",newText);
+                    listView.setVisibility(View.VISIBLE);
+                    feed.setVisibility(View.GONE);
+                    tempArr.clear();
+                    arrayAdapter.notifyDataSetChanged();
+                    for (int i = 0; i< initName.size(); i++) {
+                        if(initName.get(i).toLowerCase().contains(newText.toString().toLowerCase())){
+                            arrayAdapter.add(initName.get(i));
                         }
                     }
-                });
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            if (tempArr.size() == 1){
+                                search_username = tempArr.get(i);
+                                String str = Arrays.toString(tempArr.toArray());
+                                Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+                                intent.putExtra("USERNAME", search_username);
+                                view.getContext().startActivity(intent);
+                            }
+                        }
+                    });
+                }
                 return false;
             }
         });
@@ -167,8 +175,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public boolean onClose() {
                 searchView.onActionViewCollapsed();
-                feed.setVisibility(View.VISIBLE);
-                searchfeed.setVisibility(View.GONE);
+//                feed.setVisibility(View.VISIBLE);
+//                listView.setVisibility(View.GONE);
                 return false;
             }
         });
@@ -178,10 +186,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onBackPressed() {
         if (!searchView.isIconified()) {
-            feed.setVisibility(View.GONE);
+//            feed.setVisibility(View.GONE);
             searchView.setIconified(true);
         } else {
-            feed.setVisibility(View.VISIBLE);
+//            feed.setVisibility(View.VISIBLE);
             super.onBackPressed();
         }
     }
